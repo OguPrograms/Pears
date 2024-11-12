@@ -2,9 +2,12 @@ const instructionsbtn = document.getElementById("instructions-button");
 
 const body = document.getElementById("game");
 const recordPoints = document.getElementById("partida-record");
-// const points = document.getElementById("points");
+const gamePoints = document.getElementById("points");
 
 let actualPoints = 0;
+let bestPoints = 0;
+let actualPlayer = document.cookie.split('=')[1]
+let bestPlayer = "";
 let cardsFliped = 0;
 let firtsCartSelected;
 
@@ -20,6 +23,11 @@ function onStart(){
         body.style.backgroundColor = "rgb(165, 255, 143)";
     }else{
         body.style.backgroundColor = "orange";
+    }
+
+    if (bestPlayer = null){
+        localStorage.setItem('bestPlayer', actualPlayer); // Guardo el millor jugador i la millor puntuació es local storage per poder competir amb altres jugadors cada cop que és comenci una artida
+        localStorage.setItem('bestPoints', actualPoints);
     }
 
     for (let i = 0; i < 20; i++) {
@@ -40,66 +48,71 @@ function onStart(){
         document.getElementById("playZone").appendChild(cardWrapper);
 
         cardWrapper.addEventListener('click', function() {
-            flipCard(card, img);
+            flipCard(img, cardWrapper);
         });
 
     }
 
-    points()
+    scoreUpdate();
 
-    flipCard()
-
-}
-
-function points(){
-    recordPoints.innerHTML = "JUGADOR: " + document.cookie.slice(9) + " - PUNTS: " + actualPoints;
 }
 
 function openInstructions(){
     window.open('/instructions.html', '', 'width=400,height=500'); // He posat h=500 per no haber de fer scroll
 }
 
-function flipCard(card, img){
+function flipCard(img, cardWrapper){
 
-    if(cardsFliped >= 2){
-
-        cardsFliped = 0;
-        document.querySelectorAll('#cardWrapper').forEach(cardElement => {
-            if (cardElement.querySelector('.img')){
-                cardElement.querySelector('.img').style.display = 'none';
-                cardElement.querySelector('.card').style.display = 'block';
-            }
-        });
-
-    }
-
-    card.style.display = 'none';
-    img.style.display = 'block';
     cardsFliped += 1;
+    if (cardsFliped <= 2){
 
-    if(firtsCartSelected){
+        cardWrapper.classList.add('flipped')
+        if(cardsFliped >= 2){
 
-        if(img.src == firtsCartSelected){
+            setTimeout(function() {
 
-            let allCards = document.getElementsByClassName('img');
+                anyAccerted = false;
 
-            Array.from(allCards).forEach(card => {
+                document.querySelectorAll('#cardWrapper').forEach(cardElement => {
 
-                if (card.src.includes(firtsCartSelected)) {
-                    card.classList.add("accurated");
-                    card.classList.remove("img");
-                }
-            });
+                    const cardImg = cardElement.querySelector('.img');
 
+                    if (img.src == cardImg.src && cardImg.src == firtsCartSelected){
+                        anyAccerted = true;
+                        actualPoints += 5;
+                        cardElement.classList.add("accurated");
+                    } else if (!cardElement.classList.contains('accurated')){
+                        cardElement.classList.remove('flipped');
+                    }
+
+                });
+
+                if (!anyAccerted) actualPoints -=3;
+                scoreUpdate();
+
+                cardsFliped = 0;
+
+            }, 1000);
+
+        } else{
+            firtsCartSelected = img.src;
         }
 
-        firtsCartSelected = undefined;
-        return;
+    }
 
-    }else {
+}
 
-        firtsCartSelected = img.src;
+function scoreUpdate(){
+
+    gamePoints.innerHTML = "Punts: "+actualPoints;
+    bestPoints = localStorage.getItem('bestPoints')
+
+    if (actualPoints > bestPoints){
+
+        bestPoints = localStorage.setItem('bestPoints', actualPoints);
+        bestPlayer = localStorage.setItem('bestPlayer', actualPlayer);
 
     }
 
+    recordPoints.innerHTML = "JUGADOR: " + localStorage.getItem('bestPlayer') + " - PUNTS: " + localStorage.getItem('bestPoints');
 }

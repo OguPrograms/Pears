@@ -21,31 +21,50 @@
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
-        width: 50%;
+        width: 60%;
 
         #cardWrapper{
             background-color: cornflowerblue;
-            
-            padding: 10px;
+            position: relative;
+
             border-radius: 10px;
             margin: 10px;
 
-            :has(.accurated) {
-                background-color: rebeccapurple;
-            }
+            height: 100px;
+            width: 100px;
 
-            .accurated{
-                background-color: greenyellow;
-            }
+            transition: all 1;
+            transition: transform 0.5s;
+            transform-style: preserve-3d;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
 
             img{
-                height: 100px;
-                width: 100px;
+                height: 90%;
+                width: 90%;
             }
 
             .img{
-                display: none;
+                position: absolute;
+                backface-visibility: hidden;
+                transform: rotateY(180deg);
             }
+            
+            .card{
+                position: absolute;
+                backface-visibility: hidden;
+            }
+        }
+
+        .accurated{
+            background-color: greenyellow !important;
+        }
+
+        .flipped {
+            transform: rotateY(180deg);
+            transform-style: none !important;
         }
     }
 

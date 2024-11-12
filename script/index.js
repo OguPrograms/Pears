@@ -20,7 +20,7 @@ function getUserData(){
 function letsPlay(){
     let userName = document.getElementById("UserName").value;
     if (gameWindow){
-        // En cas de que ja hi hagi una partida en marxa, avisa y et cambia de finestra
+        // En cas de que ja hi hagi una partida en marxa, avisa i et cambia de finestra
         alert("Ja hi ha una partida en marxa!")
         gameWindow = window.open('/game.html', 'gameWindow');
     }else if (userName != ""){
