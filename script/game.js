@@ -2,14 +2,15 @@ const instructionsbtn = document.getElementById("instructions-button");
 
 const body = document.getElementById("game");
 const recordPoints = document.getElementById("partida-record");
+const playerDisplayer = document.getElementById("player-name");
 const gamePoints = document.getElementById("points");
 
 let actualPoints = 0;
 let bestPoints = 0;
-let actualPlayer = document.cookie.split('=')[1]
 let bestPlayer = "";
 let cardsFliped = 0;
 let firtsCartSelected;
+let actualPlayer = document.cookie ? document.cookie.split('=')[1] : "No te nom";
 
 instructionsbtn.addEventListener("click", openInstructions);
 
@@ -18,11 +19,15 @@ function onStart(){
     let images = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
     images = images.sort(() => Math.random() - 0.5);
 
+    playerDisplayer.innerHTML = actualPlayer;
+
     // Background color depending on the browser
     if(navigator.userAgent.includes("Chrome")){
         body.style.backgroundColor = "rgb(165, 255, 143)";
+        sessionStorage.setItem('backgroundColor', 'green');
     }else{
         body.style.backgroundColor = "orange";
+        sessionStorage.setItem('backgroundColor', 'orange');
     }
 
     if (bestPlayer = null){

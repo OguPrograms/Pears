@@ -22,10 +22,10 @@ function letsPlay(){
     if (gameWindow){
         // En cas de que ja hi hagi una partida en marxa, avisa i et cambia de finestra
         alert("Ja hi ha una partida en marxa!")
-        gameWindow = window.open('/game.html', 'gameWindow');
+        gameWindow = window.open('game.html', 'gameWindow');
     }else if (userName != ""){
         document.cookie = "username="+userName;
-        gameWindow = window.open('/game.html', 'gameWindow');
+        gameWindow = window.open('game.html', 'gameWindow');
     }else {
         alert("Has d'introduir un nom");
     }
