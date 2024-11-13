@@ -1,9 +1,14 @@
+const bc = new BroadcastChannel("PearsGamePoint");
+
 const instructionsbtn = document.getElementById("instructions-button");
 
 const body = document.getElementById("game");
 const recordPoints = document.getElementById("partida-record");
 const playerDisplayer = document.getElementById("player-name");
 const gamePoints = document.getElementById("points");
+
+const gamePage = document.getElementById("gamePage");
+const gameEnd = document.getElementById("gameFinished");
 
 let actualPoints = 0;
 let bestPoints = 0;
@@ -15,6 +20,9 @@ let actualPlayer = document.cookie ? document.cookie.split('=')[1] : "No te nom"
 instructionsbtn.addEventListener("click", openInstructions);
 
 function onStart(){
+
+    // gameEnd.style.display = "none";
+    // gamePage.style.display = "block";
 
     let images = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
     images = images.sort(() => Math.random() - 0.5);
@@ -63,13 +71,14 @@ function onStart(){
 }
 
 function openInstructions(){
-    window.open('/instructions.html', '', 'width=400,height=500'); // He posat h=500 per no haber de fer scroll
+    window.open('instructions.html', '', 'width=400,height=500'); // He posat h=500 per no haber de fer scroll
 }
 
 function flipCard(img, cardWrapper){
 
-    cardsFliped += 1;
-    if (cardsFliped <= 2){
+    if (cardsFliped <= 2 && !cardWrapper.classList.contains("flipped")){
+
+        cardsFliped += 1;
 
         cardWrapper.classList.add('flipped')
         if(cardsFliped >= 2){
@@ -111,6 +120,9 @@ function scoreUpdate(){
 
     gamePoints.innerHTML = "Punts: "+actualPoints;
     bestPoints = localStorage.getItem('bestPoints')
+
+    // Enviar la info de la partida via Brodcast
+    bc.postMessage({"score" : actualPoints, "player" : actualPlayer, "estate" : "En Joc"});
 
     if (actualPoints > bestPoints){
 

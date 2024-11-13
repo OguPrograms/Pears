@@ -66,6 +66,10 @@
             transform: rotateY(180deg);
             transform-style: none !important;
         }
+
+        #gameFinished {
+            display: none;
+        }
     }
 
 }

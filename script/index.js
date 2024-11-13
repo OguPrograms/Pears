@@ -1,7 +1,10 @@
+const bc = new BroadcastChannel("PearsGamePoint");
+
 const playBtn = document.getElementById("PlayButton");
 const restartBtn = document.getElementById("RestartButton");
 
-const infoGame = document.getElementById("infoGame")
+const infoGame = document.getElementById("infoGame");
+const gameScore = document.getElementById("ifoGame");
 
 let gameWindow;
 
@@ -34,7 +37,16 @@ function letsPlay(){
 function restart(){
     if (gameWindow){
         gameWindow.close();
+        gameWindow = ""
     }
     document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    infoGame.innerHTML = "No hi ha cap partida en joc"
+    gameScore.innerHTML = "No hi ha cap partida en joc"
 }
+
+// Brodcast recive data
+bc.onmessage = (event) => {
+    gameScore.innerHTML =   
+        "NOM: " + event.data.player + 
+        ", PUNTS: " + event.data.score + 
+        ", ESTAT PARTIDA: " + event.data.estate;
+};

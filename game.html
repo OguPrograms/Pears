@@ -5,20 +5,29 @@
     <title>Pears game</title>
     <link rel="stylesheet" href="style/styles.css">
     <script src="script.js" defer></script>
+    <link rel="icon" href="img/card.png" type="image/png">
 </head>
 <body id="game" onload="onStart()">
-    
-    <button id="instructions-button">Instruccions</button>
-    
-    <h1>Puntuació més alta</h1>
-    <h3 id="partida-record"></h3>
 
-    <h1 id="player-name">No te nom</h1>
-    <div id="points">Punts: 0</div>
+    <div id="gamePage">
 
-    <div id="table" class="grid-container"></div>
-    <script src="script/game.js"></script>
+        <button id="instructions-button">Instruccions</button>
+        
+        <h1>Puntuació més alta</h1>
+        <h3 id="partida-record"></h3>
 
-    <div id="playZone"></div>
+        <h1 id="player-name">No te nom</h1>
+        <div id="points">Punts: 0</div>
+
+        <div id="table" class="grid-container"></div>
+        <script src="script/game.js"></script>
+
+        <div id="playZone"></div>
+
+    </div>
+
+    <div id="gameFinished">
+        <h1>S'ha finalitzat la partida</h1>
+    </div>
 </body>
 </html>
