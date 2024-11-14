@@ -1,0 +1,1 @@
+document.getElementById("gameFinished").style.backgroundColor = sessionStorage.getItem("backgroundColor");

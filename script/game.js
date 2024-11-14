@@ -7,13 +7,11 @@ const recordPoints = document.getElementById("partida-record");
 const playerDisplayer = document.getElementById("player-name");
 const gamePoints = document.getElementById("points");
 
-const gamePage = document.getElementById("gamePage");
-const gameEnd = document.getElementById("gameFinished");
-
 let actualPoints = 0;
 let bestPoints = 0;
 let bestPlayer = "";
 let cardsFliped = 0;
+let gameState = "";
 let firtsCartSelected;
 let actualPlayer = document.cookie ? document.cookie.split('=')[1] : "No te nom";
 
@@ -21,18 +19,16 @@ instructionsbtn.addEventListener("click", openInstructions);
 
 function onStart(){
 
-    // gameEnd.style.display = "none";
-    // gamePage.style.display = "block";
-
     let images = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
     images = images.sort(() => Math.random() - 0.5);
 
     playerDisplayer.innerHTML = actualPlayer;
+    gameState = "En Joc";
 
     // Background color depending on the browser
     if(navigator.userAgent.includes("Chrome")){
         body.style.backgroundColor = "rgb(165, 255, 143)";
-        sessionStorage.setItem('backgroundColor', 'green');
+        sessionStorage.setItem('backgroundColor', 'rgb(165, 255, 143)');
     }else{
         body.style.backgroundColor = "orange";
         sessionStorage.setItem('backgroundColor', 'orange');
@@ -76,7 +72,7 @@ function openInstructions(){
 
 function flipCard(img, cardWrapper){
 
-    if (cardsFliped <= 2 && !cardWrapper.classList.contains("flipped")){
+    if (cardsFliped <= 1 && !cardWrapper.classList.contains("flipped")){
 
         cardsFliped += 1;
 
@@ -86,6 +82,8 @@ function flipCard(img, cardWrapper){
             setTimeout(function() {
 
                 anyAccerted = false;
+
+                let hasWin = true;
 
                 document.querySelectorAll('#cardWrapper').forEach(cardElement => {
 
@@ -97,9 +95,16 @@ function flipCard(img, cardWrapper){
                         cardElement.classList.add("accurated");
                     } else if (!cardElement.classList.contains('accurated')){
                         cardElement.classList.remove('flipped');
+                        hasWin = false;
                     }
 
                 });
+
+                if (hasWin){
+                    gameState = "Partida finalitzada";
+                    scoreUpdate();
+                    window.location.href = 'gameFinish.html';
+                }
 
                 if (!anyAccerted) actualPoints -=3;
                 scoreUpdate();
@@ -122,7 +127,7 @@ function scoreUpdate(){
     bestPoints = localStorage.getItem('bestPoints')
 
     // Enviar la info de la partida via Brodcast
-    bc.postMessage({"score" : actualPoints, "player" : actualPlayer, "estate" : "En Joc"});
+    bc.postMessage({"score" : actualPoints, "player" : actualPlayer, "estate" : gameState});
 
     if (actualPoints > bestPoints){
 

@@ -7,6 +7,7 @@ const infoGame = document.getElementById("infoGame");
 const gameScore = document.getElementById("ifoGame");
 
 let gameWindow;
+let playing;
 
 playBtn.addEventListener("click", letsPlay);
 restartBtn.addEventListener("click", restart)
@@ -22,10 +23,8 @@ function getUserData(){
 
 function letsPlay(){
     let userName = document.getElementById("UserName").value;
-    if (gameWindow){
-        // En cas de que ja hi hagi una partida en marxa, avisa i et cambia de finestra
+    if (gameWindow && playing){
         alert("Ja hi ha una partida en marxa!")
-        gameWindow = window.open('game.html', 'gameWindow');
     }else if (userName != ""){
         document.cookie = "username="+userName;
         gameWindow = window.open('game.html', 'gameWindow');
@@ -49,4 +48,6 @@ bc.onmessage = (event) => {
         "NOM: " + event.data.player + 
         ", PUNTS: " + event.data.score + 
         ", ESTAT PARTIDA: " + event.data.estate;
+
+    event.data.estate == "En Joc"? playing = true : playing = false;
 };

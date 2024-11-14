@@ -67,9 +67,6 @@
             transform-style: none !important;
         }
 
-        #gameFinished {
-            display: none;
-        }
     }
 
 }
@@ -82,4 +79,10 @@
     h1{
         color:deepskyblue;
     }
+}
+
+#gameFinished {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
